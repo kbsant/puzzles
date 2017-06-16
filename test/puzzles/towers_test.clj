@@ -38,6 +38,6 @@
     [actual expected]))
 
 (deftest test-towers-rec
-  (testing "the recursive implementation of Towers of Hanoi"
+  (testing "the recursive implementation of Towers of Hanoi moves a pile of 4 discs from tower A to B via C"
     (let [[actual expected] (test-towers towers-rec)]
       (is (= actual expected)))))
