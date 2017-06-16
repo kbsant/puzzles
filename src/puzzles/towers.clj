@@ -7,7 +7,7 @@
 ;;        -----              |                  |
 ;;      ---------            |                  |
 ;;  ................  .................  ................
-;; {:id 'a :data [4 3 2 1]  {:id 'b :data [] } {:id 'c :data []}
+;; {:id 'a :data [4 3 2 1] } {:id 'b :data [] } {:id 'c :data []}
 ;; Parameters:
 ;; This function takes 3 parameters: from, to and tmp, which represent 3 towers.
 ;; Each tower is represented by a map with keys :id and :data.
