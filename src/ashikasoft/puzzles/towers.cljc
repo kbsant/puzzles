@@ -1,5 +1,5 @@
 (ns ^{:doc "Ashikasoft - Puzzles solved with Clojure" :author "Kean Santos"}
-  puzzles.towers)
+  ashikasoft.puzzles.towers)
 
 ;; Recursive solution to the Towers of Hanoi
 ;;          |                |                  |

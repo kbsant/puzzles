@@ -1,6 +1,6 @@
-(ns puzzles.towers-test
+(ns ashikasoft.puzzles.towers-test
   (:require [clojure.test :refer :all]
-            [puzzles.towers :refer :all]))
+            [ashikasoft.puzzles.towers :refer :all]))
 
 ;; test-towers
 ;; This test takes a functio that solves the of Towers of Hanoi, runs it on

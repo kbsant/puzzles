@@ -1,4 +1,4 @@
-(defproject puzzles "0.1.0-SNAPSHOT"
+(defproject ashikasoft/puzzles "0.1.0-SNAPSHOT"
   :description "Puzzles solved with Clojure"
   :url "http://www.ashikasoft.com"
   :license {:name "Eclipse Public License"
