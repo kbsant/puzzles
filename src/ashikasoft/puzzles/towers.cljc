@@ -1,5 +1,6 @@
-(ns ^{:doc "Ashikasoft - Puzzles solved with Clojure" :author "Kean Santos"}
-  ashikasoft.puzzles.towers)
+(ns ashikasoft.puzzles.towers
+    "Ashikasoft - Towers of Hanoi solved with Clojure")
+
 
 ;; Recursive solution to the Towers of Hanoi
 ;;          |                |                  |
@@ -33,17 +34,32 @@
 ;; In the above solution, [1 a c] moves the top disc (1) from tower a to tower c.
 ;; For reference, code that applies the solution step by step is available in the towers test.
 (defn towers-rec
-  "Solve the Towers of Hanoi recursively."
-  ( [from to tmp solution]
-    (if (empty? (:data from))
-       solution
-       (let [[bottom & remaining] (:data from)
-             remaining-from       (assoc from :data remaining)
-             solution-tmp         (towers-rec remaining-from tmp to solution)
-             next-from            (assoc from :data [])
-             next-to              (assoc to :data [bottom])
-             next-tmp             (assoc tmp :data remaining)
-             next-solution        (conj solution-tmp [bottom (:id from) (:id to)])]
-          (towers-rec next-tmp next-to next-from next-solution))))
-  ( [from to tmp]
-    (towers-rec from to tmp [])))
+  "Solve the Towers of Hanoi recursively. Discs are represented by a :data vector."
+  ([from to tmp solution]
+   (if (empty? (:data from))
+     solution
+     (let [[bottom & remaining] (:data from)
+           remaining-from       (assoc from :data remaining)
+           solution-tmp         (towers-rec remaining-from tmp to solution)
+           next-from            (assoc from :data [])
+           next-to              (assoc to :data [bottom])
+           next-tmp             (assoc tmp :data remaining)
+           next-solution        (conj solution-tmp [bottom (:id from) (:id to)])]
+      (towers-rec next-tmp next-to next-from next-solution))))
+  ([from to tmp]
+   (towers-rec from to tmp [])))
+
+
+(defn towers-rec-nodata
+  "Recursive solution to Towers of Hanoi. This implementation does not use a data vector
+  and represents the tower discs by the height of the tower.
+  The solution vector only contains the source and destination towers, and not the disc label."
+  ([from to tmp height solution]
+   (if (zero? height)
+     solution
+     (let [remaining       (dec height)
+           solution-tmp    (towers-rec-nodata from tmp to remaining solution)
+           next-solution   (conj solution-tmp ['x (:id from) (:id to)])]
+       (towers-rec-nodata tmp to from remaining next-solution))))
+  ([from to tmp height]
+   (towers-rec-nodata from to tmp height [])))

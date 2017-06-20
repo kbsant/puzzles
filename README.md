@@ -22,7 +22,7 @@ To include it in your project, download it from github and install it locally wi
     ;;  ................  .................  ................
 
 A recursive implementation of Towers of Hanoi is available.
-It is written in platform-independent clojure and works without sid-effects:
+It is written in platform-independent clojure and works without side-effects:
 maps serve as input, while a the output solution is a series of steps represented
 by a vector:
 

@@ -22,22 +22,30 @@
         expected {:a (assoc a :data [])
                   :b (assoc b :data [ 4 3 2 1])
                   :c c}
-        move (fn [set [value from to]]
-                (when (= value (peek (get-in set [from :data])))
+        move (fn [set from to]
+                (let [value (peek (get-in set [from :data]))]
                   (-> set
                     (update-in [from :data] pop)
                     (update-in [to :data] conj value))))
         actual (loop [working start-set
                       steps (towers-fn a b c)]
-                  (let [[current & next-steps] steps
-                        next-working (when current (move working current))]
-                    #_(println (str "working: " working " steps: " steps))
-                    (if next-working
-                      (recur next-working next-steps)
-                      working)))]
+                  (if (empty? steps)
+                    working
+                    (let [[current-step & next-steps] steps
+                          [_ from to] current-step
+                          next-working (move working from to)]
+                      #_(println (str "working: " working " steps: " steps))
+                      (recur next-working next-steps))))]
     [actual expected]))
 
 (deftest test-towers-rec
   (testing "the recursive implementation of Towers of Hanoi moves a pile of 4 discs from tower A to B via C"
     (let [[actual expected] (test-towers towers-rec)]
+      (is (= actual expected)))))
+
+(deftest test-towers-rec-nodata
+  (testing "the recursive, no-data implementation of Towers of Hanoi moves a pile of 4 discs from tower A to B via C"
+    (let [height            4
+          test-fn           (fn [a b c] (towers-rec-nodata a b c height))
+          [actual expected] (test-towers test-fn)]
       (is (= actual expected)))))
