@@ -50,7 +50,7 @@
    (towers-rec from to tmp [])))
 
 
-(defn towers-rec-nodata
+(defn towers-rec-height
   "Recursive solution to Towers of Hanoi. This implementation does not use a data vector
   and represents the tower discs by the height of the tower.
   The solution vector only contains the source and destination towers, and not the disc label."
@@ -58,8 +58,8 @@
    (if (zero? height)
      solution
      (let [remaining       (dec height)
-           solution-tmp    (towers-rec-nodata from tmp to remaining solution)
+           solution-tmp    (towers-rec-height from tmp to remaining solution)
            next-solution   (conj solution-tmp ['x (:id from) (:id to)])]
-       (towers-rec-nodata tmp to from remaining next-solution))))
+       (towers-rec-height tmp to from remaining next-solution))))
   ([from to tmp height]
-   (towers-rec-nodata from to tmp height [])))
+   (towers-rec-height from to tmp height [])))

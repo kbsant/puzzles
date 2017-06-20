@@ -43,9 +43,9 @@
     (let [[actual expected] (test-towers towers-rec)]
       (is (= actual expected)))))
 
-(deftest test-towers-rec-nodata
-  (testing "the recursive, no-data implementation of Towers of Hanoi moves a pile of 4 discs from tower A to B via C"
+(deftest test-towers-rec-height
+  (testing "the recursive, height-based implementation of Towers of Hanoi moves a pile of 4 discs from tower A to B via C"
     (let [height            4
-          test-fn           (fn [a b c] (towers-rec-nodata a b c height))
+          test-fn           (fn [a b c] (towers-rec-height a b c height))
           [actual expected] (test-towers test-fn)]
       (is (= actual expected)))))
