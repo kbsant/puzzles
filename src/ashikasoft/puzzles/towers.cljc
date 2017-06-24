@@ -105,7 +105,7 @@
       (update-in [dst :data] conj value))))
 
 ;; Helper function for testing or simulation
-(defn fn-using-height
+(defn with-height-fn
    "Adapter to allow a solver function that takes only each tower's id and height to accept towers containing data vectors."
    [f]
    (let [height (fn [a] (count (:data a)))]

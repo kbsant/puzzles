@@ -53,13 +53,13 @@
 (deftest test-towers-rec-height
   (testing "the recursive, height-based implementation of Towers of Hanoi moves a pile of 4 discs from tower A to B via C"
     (let [height            (fn [a] (count (:data a)))
-          test-fn           (fn-using-height towers-rec-height)
+          test-fn           (with-height-fn towers-rec-height)
           [actual expected] (test-towers test-fn)]
       (is (= actual expected)))))
 
 (deftest test-towers-stack-height
   (testing "the tail-recursive, height-based implementation of Towers of Hanoi moves a pile of 4 discs from tower A to B via C"
     (let [height            (fn [a] (count (:data a)))
-          test-fn           (fn-using-height towers-stack-height)
+          test-fn           (with-height-fn towers-stack-height)
           [actual expected] (test-towers test-fn)]
       (is (= actual expected)))))
