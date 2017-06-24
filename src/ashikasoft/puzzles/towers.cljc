@@ -88,3 +88,22 @@
             (recur (conj rest-stack tmp-to-dst src-to-dst src-to-tmp) solution))))))
   ([src dst tmp height]
    (towers-stack-height [[src dst tmp height]] [])))
+
+
+;; Helper function for testing or simulation
+;; given a map of towers with layout {:id src :data [d4 d3 d2 d1]}
+;; move the top-most item (disc) from src to dst.
+(defn move
+  "Given a map of 3 towers, move a disc from the :data vector of the src tower to the dst tower."
+  [towers src dst]
+  (let [value (peek (get-in towers [src :data]))]
+    (-> towers
+      (update-in [src :data] pop)
+      (update-in [dst :data] conj value))))
+
+;; Helper function for testing or simulation
+(defn fn-using-height
+   "Adapter to allow a solver function that takes only each tower's id and height to accept towers containing data vectors."
+   [f]
+   (let [height (fn [a] (count (:data a)))]
+     (fn [ a b c] (f (:id a) (:id b) (:id c) (height a)))))
