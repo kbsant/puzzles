@@ -8,10 +8,13 @@ See the blog at http://www.ashikasoft.com
 ## Usage
 
 * How to include it in your project
-This library is not mature, and is not distributed pre-built.
-To include it in your project, download it from github and install it locally with:
+To include it in your project, download it from github and install it in your local repository with lein:
 
     lein install
+
+Then include it in project.clj:
+
+    [ashikasoft/puzzles "0.1.0-SNAPSHOT]
 
 * Towers of Hanoi
 

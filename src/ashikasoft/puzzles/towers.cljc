@@ -85,8 +85,11 @@
          (let [src-to-tmp [src tmp dst remaining]   ;; move all but last to tmp
                src-to-dst [src dst tmp 1]           ;; move last to dst
                tmp-to-dst [tmp dst src remaining]]  ;; move move from tmp to dst
+            ;; ensure that when popped of the stack, we get the steps in the order above:
+            ;; src-to-tmp, src-to-dst, tmp-to-dst
             (recur (conj rest-stack tmp-to-dst src-to-dst src-to-tmp) solution))))))
   ([src dst tmp height]
+   ;; represent the stack as a vector, and each element on the stack as a vector of parameters
    (towers-stack-height [[src dst tmp height]] [])))
 
 
