@@ -19,7 +19,7 @@ Then include it in project.clj:
 
 * Towers of Hanoi
 
-    [Diagram of towers]
+```
     ;;
     ;;          |                |                  |
     ;;         ---               |                  |
@@ -27,6 +27,7 @@ Then include it in project.clj:
     ;;      ---------            |                  |
     ;;  ................  .................  ................
     ;;         src              dst                tmp
+```
 
 A recursive implementation of Towers of Hanoi is available.
 It is written in platform-independent clojure and works without side-effects:
