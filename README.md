@@ -19,7 +19,7 @@ Then include it in project.clj:
 
 * Towers of Hanoi
 
-    ;; (Diagram of towers)
+    [Diagram of towers]
     ;;
     ;;          |                |                  |
     ;;         ---               |                  |
