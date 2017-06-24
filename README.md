@@ -8,6 +8,7 @@ See the blog at http://www.ashikasoft.com
 ## Usage
 
 * How to include it in your project
+
 To include it in your project, download it from github and install it in your local repository with lein:
 
     lein install
@@ -18,11 +19,13 @@ Then include it in project.clj:
 
 * Towers of Hanoi
 
+    ;;
     ;;          |                |                  |
     ;;         ---               |                  |
     ;;        -----              |     I            |
     ;;      ---------            |                  |
     ;;  ................  .................  ................
+    ;;         src              dst                tmp
 
 A recursive implementation of Towers of Hanoi is available.
 It is written in platform-independent clojure and works without side-effects:
@@ -35,9 +38,21 @@ by a vector:
     ;;   {:id 'b :data [] }
     ;;   {:id 'c :data []} )
     ;; Output:
-    ;; [[1 a c] [2 a b] [1 c b] [3 a c] [1 b a] [2 b c] [1 a c] [4 a b] [1 c b] [2 c a] [1 b a] [3 c b] [1 a c] [2 a b] [1 c b]]
+    ;; [[a c 1] [a b 2] [c b 1] [a c 3] [b a 1] [b c 2] [a c 1] [a b 4] [c b 1] [c a 2] [b a 1] [c b 3] [a c 1] [a b 2] [c b 1]]
 
-For an example of re-applying the solution vector to the original data, see the unit test.
+To apply the solution vector to the tower data, use the towers/move function:
+
+    ;; Move a disc according to the first step of the solution
+    (let [a              {:id :a :data [4 3 2 1]}
+          b              {:id :b :data []}
+          c              {:id :c :data []}
+          initial-state  {:a a :b b :c c}
+          solution-steps (towers-rec a b c)
+          [src dst]      (first solution-steps)]
+        (move initial-state src dst))
+
+For an example using a loop for all of the solution steps, see towers_test.
+
 Clojurescript demo: coming soon
 
 
