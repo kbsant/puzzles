@@ -3,7 +3,9 @@
 Puzzles solved with Clojure - this project currently contains 1 puzzle:
 * Towers of Hanoi
 
-See the blog at http://www.ashikasoft.com
+![Gif of Towers](https://github.com/keansant/puzzles/blob/master/towers-hanoi-cljs.gif?raw=true)
+
+See also the blog at http://www.ashikasoft.com
 
 ## Usage
 
