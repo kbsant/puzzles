@@ -57,7 +57,8 @@ To apply the solution vector to the tower data, use the towers/move function:
 
 For an example using a loop for all of the solution steps, see towers_test.
 
-Clojurescript demo: coming soon
+Clojurescript demo: http://www.ashikasoft.com/demo source coming soon
+
 
 
 
