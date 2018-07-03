@@ -46,8 +46,11 @@
            (repeat-on-data initial-cube 4 rtop+)))))
 
 (deftest test-rbottom-
-  (testing "rbottom- once steps once."
-    (is (= 1 nil))) 
+  (testing "rbottom- once turns a side once."
+    (is (= [11 18 17
+            12    16
+            13 14 15]
+           (-> initial-cube rbottom- (subvec 12)))))
   (testing "rbottom- 3 times is the same as rbottom+ once."
     (is (= (rbottom+ initial-cube)
            (repeat-on-data initial-cube 3 rbottom-))) 
@@ -56,8 +59,11 @@
            (repeat-on-data initial-cube 4 rbottom-))))))
 
 (deftest test-rbottom+
-  (testing "rbottom+ once steps once."
-    (is (= 1 nil))) 
+  (testing "rbottom+ once turns a side once."
+    (is (= [15 14 13
+            16    12
+            17 18 11]
+           (-> initial-cube rbottom+ (subvec 12)))))
   (testing "rbottom+ 3 times is the same as rbottom- once."
     (is (= (rbottom- initial-cube)
            (repeat-on-data initial-cube 3 rbottom+))) 
