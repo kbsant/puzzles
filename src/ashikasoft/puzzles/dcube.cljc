@@ -45,17 +45,27 @@
            11 12 13])
 
 
+;;  indexes: 0 1 2 3 4 5 6 7
+;;  values:  7 6 5 8 4 1 2 3  ->  1 8 7 2 6 3 4 5
 (defn rtop-
   "Rotate the top row to the left."
   [cube]
-  cube)
-;; cube [0 ~ 7] := cube [1 ~ 7], cube [0]
+  (reduce
+    into
+    [[]
+     (map #(get cube %) [5 3 0 6 1 7 4 2])
+     (subvec cube 8)]))
 
+;;  indexes: 0 1 2 3 4 5 6 7
+;;  values:  7 6 5 8 4 1 2 3  ->  5 4 3 6 2 7 8 1
 (defn rtop+
   "Rotate the top row to the right."
   [cube]
-  cube)
-;; cube [0 ~ 7] := cube [7] , cube [1 ~ 6]
+  (reduce
+    into
+    [[]
+     (map #(get cube %) [2 4 7 1 6 0 3 5])
+     (subvec cube 8)]))
 
 (defn rbottom-
   "Rotate the bottom row to the left."
@@ -69,4 +79,23 @@
   cube)
 ;; cube [12 ~ 19] := cube [19] , cube [12 ~ 18]
 
+(defn rleft-
+  "Rotate the left column upward."
+  [cube]
+  cube)
+
+(defn rleft+
+  "Rotate the left column downward."
+  [cube]
+  cube)
+
+(defn rright-
+  "Rotate the right column upward."
+  [cube]
+  cube)
+
+(defn rright+
+  "Rotate the right column downward."
+  [cube]
+  cube)
 
