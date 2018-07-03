@@ -1,6 +1,8 @@
 # puzzles
 
-Puzzles solved with Clojure - this project currently contains 1 puzzle:
+Puzzles solved with Clojure - this project currently contains 2 puzzles:
+
+* Cube puzzle (work in progress)
 * Towers of Hanoi
 
 ![Gif of Towers](towers-hanoi-cljs.gif?raw=true)
@@ -18,6 +20,31 @@ To include it in your project, download it from github and install it in your lo
 Then include it in project.clj:
 
     [ashikasoft/puzzles "0.1.0-SNAPSHOT]
+
+* Cube puzzle
+
+```
+    ;;              7  6  5
+    ;;              8  B  4
+    ;;              1  2  3
+    ;;
+    ;;   7  8  1    1  2  3    3  4  5
+    ;;  19  N  9    9  W 10   10  R 20
+    ;;  11 18 17   17 16 15   15 14 13
+    ;;
+    ;;             17 16 15
+    ;;             18  G 14
+    ;;             11 12 13             
+    ;;
+    ;;             11 12 13
+    ;;             19  Y 20
+    ;;              7  6  5
+```
+A six-sided cube has one color for each side: Blue, oraNge, White, Red, Green and Yellow.
+Each side (face) is divided into 9 tiled sub-cubes, forming rows and columns.
+Sub-cubes along the edges and corners are shared across sides, i.e. tiles with the same number refer to the same sub-cube.  
+Rows and columns on a cube may be rotated, causing the colors to be scrambled.
+The dcube program de-scrambles this by searching backwards from the initial pristine state to the scrambled state. 
 
 * Towers of Hanoi
 
@@ -64,7 +91,7 @@ Clojurescript demo: http://www.ashikasoft.com/demo source coming soon
 
 ## License
 
-Copyright © 2017 Kean Santos
+Copyright © 2018 Kean Santos
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
