@@ -2,10 +2,10 @@
   (:require [ashikasoft.puzzles.dcube :refer :all]
             [clojure.test :refer :all]))
 
-(defn- repeat-on-data
-  "Call a function f on the given data, then call it again on the return value, a total of n times."
-  [data n f]
-  (reduce #(%2 %1) data (repeat n f)))
+(defn- reduce-on-data
+  [data fs]
+  "Thread the given data through a sequence of functions."
+  (reduce #(%2 %1) data fs))
 
 (deftest test-initial-cube
   (testing "initial position of top row"
@@ -27,10 +27,10 @@
            (-> initial-cube rtop- (subvec 0 8))))) 
   (testing "rtop- 3 times is the same as rtop+ once."
     (is (= (rtop+ initial-cube)
-           (repeat-on-data initial-cube 3 rtop-)))) 
+           (reduce-on-data initial-cube (repeat 3 rtop-))))) 
   (testing "rtop- 4 times goes back to the original."
     (is (= initial-cube
-           (repeat-on-data initial-cube 4 rtop-)))))
+           (reduce-on-data initial-cube (repeat 4 rtop-))))))
 
 (deftest test-rtop+
   (testing "rtop+ once turns a side once."
@@ -40,10 +40,10 @@
            (-> initial-cube rtop+ (subvec 0 8))))) 
   (testing "rtop+ 3 times is the same as rtop- once."
     (is (= (rtop- initial-cube)
-           (repeat-on-data initial-cube 3 rtop+)))) 
+           (reduce-on-data initial-cube (repeat 3 rtop+))))) 
   (testing "rtop+ 4 times goes back to the original."
     (is (= initial-cube
-           (repeat-on-data initial-cube 4 rtop+)))))
+           (reduce-on-data initial-cube (repeat 4 rtop+))))))
 
 (deftest test-rbottom-
   (testing "rbottom- once turns a side once."
@@ -53,10 +53,10 @@
            (-> initial-cube rbottom- (subvec 12)))))
   (testing "rbottom- 3 times is the same as rbottom+ once."
     (is (= (rbottom+ initial-cube)
-           (repeat-on-data initial-cube 3 rbottom-))) 
+           (reduce-on-data initial-cube (repeat 3 rbottom-)))) 
    (testing "rbottom- 4 times goes back to the original."
     (is (= initial-cube
-           (repeat-on-data initial-cube 4 rbottom-))))))
+           (reduce-on-data initial-cube (repeat 4 rbottom-)))))))
 
 (deftest test-rbottom+
   (testing "rbottom+ once turns a side once."
@@ -66,10 +66,10 @@
            (-> initial-cube rbottom+ (subvec 12)))))
   (testing "rbottom+ 3 times is the same as rbottom- once."
     (is (= (rbottom- initial-cube)
-           (repeat-on-data initial-cube 3 rbottom+))) 
+           (reduce-on-data initial-cube (repeat 3 rbottom+)))) 
    (testing "rbottom+ 4 times goes back to the original."
     (is (= initial-cube
-           (repeat-on-data initial-cube 4 rbottom+))))))
+           (reduce-on-data initial-cube (repeat 4 rbottom+)))))))
 
 (deftest test-rleft-
   (testing "rleft- once steps once."
@@ -77,10 +77,10 @@
            (rleft- initial-cube)))) 
   (testing "rleft- 3 times is the same as rleft+ once."
     (is (= (rleft+ initial-cube)
-           (repeat-on-data initial-cube 3 rleft-))) 
+           (reduce-on-data initial-cube (repeat 3 rleft-)))) 
    (testing "rleft- 4 times goes back to the original."
     (is (= initial-cube
-           (repeat-on-data initial-cube 4 rleft-))))))
+           (reduce-on-data initial-cube (repeat 4 rleft-)))))))
 
 (deftest test-rleft+
   (testing "rleft+ once steps once."
@@ -88,10 +88,10 @@
            (rleft+ initial-cube)))) 
   (testing "rleft+ 3 times is the same as rleft- once."
     (is (= (rleft- initial-cube)
-           (repeat-on-data initial-cube 3 rleft+))) 
+           (reduce-on-data initial-cube (repeat 3 rleft+)))) 
    (testing "rleft+ 4 times goes back to the original."
     (is (= initial-cube
-           (repeat-on-data initial-cube 4 rleft+))))))
+           (reduce-on-data initial-cube (repeat 4 rleft+)))))))
 
 (deftest test-rright-
   (testing "rright- once steps once."
@@ -99,10 +99,10 @@
            (rright- initial-cube)))) 
   (testing "rright- 3 times is the same as rright+ once."
     (is (= (rright+ initial-cube)
-           (repeat-on-data initial-cube 3 rright-))) 
+           (reduce-on-data initial-cube (repeat 3 rright-)))) 
    (testing "rright- 4 times goes back to the original."
     (is (= initial-cube
-           (repeat-on-data initial-cube 4 rright-))))))
+           (reduce-on-data initial-cube (repeat 4 rright-)))))))
 
 (deftest test-rright+
   (testing "rright+ once steps once."
@@ -110,10 +110,10 @@
            (rright+ initial-cube)))) 
   (testing "rright+ 3 times is the same as rright- once."
     (is (= (rright- initial-cube)
-           (repeat-on-data initial-cube 3 rright+))) 
+           (reduce-on-data initial-cube (repeat 3 rright+)))) 
    (testing "rright+ 4 times goes back to the original."
     (is (= initial-cube
-           (repeat-on-data initial-cube 4 rright+))))))
+           (reduce-on-data initial-cube (repeat 4 rright+)))))))
 
 (deftest test-ops-complements
   (testing "there are 8 operations."
@@ -132,7 +132,7 @@
   (testing "step should generate all 8 next available steps when previous is empty."
     (is (= 8 (count (next-steps initial-cube [])))))
   (testing "the set of next steps should be the operators."
-    (is (= (into #{} ops) (into #{} (map (comp peek second) (next-steps initial-cube [])))))) 
+    (is (= (into #{} ops) (into #{} (map (comp peek second) (next-steps initial-cube []))))))
   (testing "the set of next states should be the result of the operators on the previous state."
     (is (= (into #{} (map #(@% initial-cube) ops))
            (into #{} (map first (next-steps initial-cube [])))))))
@@ -140,3 +140,13 @@
 (deftest test-filter-previous
   (testing "Previously encountered states are filtered out."
     (is (= 1 nil))))
+
+(deftest test-solve
+  (testing "Solving the initial state should be empty."
+    (is (empty? (solve initial-cube))))
+  (testing "It takes 1 top rotation to reach this target."
+    (is (= 'rtop- (meta-name (peek (solve (rtop- initial-cube)))))))
+  (testing "A short sequence of operations is solvable."
+    (is (= '('rtop- 'rleft+ 'rbottom+ 'rright-)
+           (map meta-name (solve (-> initial-cube rtop- rleft+ rbottom+ rright-)))))))
+

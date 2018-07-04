@@ -144,3 +144,17 @@
   "Filter out items in the list if they were previously encountered."
   [previous-map next-list]
   next-list)
+
+(def meta-name
+  "Return the meta name of the given var."
+  (comp :name meta))
+
+;; TODO use a queue to solve using bfs. import medley. 
+(defn solve
+  "Starting at the initial cube, generate all steps needed to get to the target cube."
+  [target-cube]
+  (loop [cube initial-cube, steps '()]
+    (if (= target-cube cube)
+      steps
+      nil)))
+
