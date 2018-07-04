@@ -12,6 +12,7 @@
 ;; faces: 6
 ;; cells: 9 per face
 ;; but only 20 moving parts.
+;; TODO do we need to keep track of the orientation of each part?
 ;;
 ;;
 ;;          7  6  5
@@ -24,7 +25,7 @@
 ;;             Y
 ;;
 ;; [0 1 2 3 4 5 6 7  8 9 10 11 12 13 14 15 16 17 18 19]
-;;  1 2 3 4 5 6 7 8 19 9 10 20 11 12 13 14 15 16 17 18
+;;  7 6 5 8 4 1 2 3 19 9 10 20 17 16 15 18 14 11 12 13
 ;;
 ;; 8 Operations -- rotate: 
 ;; * top (-, +)
@@ -32,7 +33,12 @@
 ;; * left (-, +)
 ;; * right (-, +)
 ;;
-;; Implementation:
+;; States and steps:
+;; * when transforming a cube, keep track of both states and operations:
+;; [current-state-0 list-of-operations-0]
+;; -> [[next-state-n list-of-operations-n]] 
+;; * then filter the list of next states given a map of previous states,
+;;
 
 (def initial-cube
   "Initial cube data - sorted position."
@@ -114,7 +120,27 @@
   [cube]
   (into [] (map #(get cube %) [0 1 19 3 11 5 6 2 8 9 4 16 12 13 7 15 10 17 18 14])))
 
-;; TODO keep track of both the commands and the results
-(defn next-steps [step previous]
-  #{step})
+(def ops-complements
+  "A map of operations and their complements. Uses vars so that their names are available."
+  {#'rtop- #'rtop+
+   #'rtop+ #'rtop-
+   #'rbottom- #'rbottom+
+   #'rbottom+ #'rbottom-
+   #'rleft- #'rleft+
+   #'rleft+ #'rleft-
+   #'rright- #'rright+
+   #'rright+ #'rright-})
 
+(def ops
+  "A collection of operations"
+  (keys ops-complements))
+
+(defn next-steps
+  "given a state and its history, return all the next steps."
+  [cube steps]
+  (map #(vector (%1 cube) (conj steps %1)) ops))
+
+(defn filter-previous
+  "Filter out items in the list if they were previously encountered."
+  [previous-map next-list]
+  next-list)

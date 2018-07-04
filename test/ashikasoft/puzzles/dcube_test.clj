@@ -2,7 +2,7 @@
   (:require [ashikasoft.puzzles.dcube :refer :all]
             [clojure.test :refer :all]))
 
-(defn repeat-on-data
+(defn- repeat-on-data
   "Call a function f on the given data, then call it again on the return value, a total of n times."
   [data n f]
   (reduce #(%2 %1) data (repeat n f)))
@@ -115,6 +115,28 @@
     (is (= initial-cube
            (repeat-on-data initial-cube 4 rright+))))))
 
+(deftest test-ops-complements
+  (testing "there are 8 operations."
+    (is (= 8 (count ops))))
+  (testing "testing operations and their complements."
+    (let [complements (map ops-complements ops)
+          original-data (repeat 8 initial-cube)
+          transformed-data (map #(%1 initial-cube) ops)
+          reverted-data (map (fn [[k v]](k v)) (zipmap complements transformed-data))]
+      (testing "every operation results in a value different from the original."
+        (is (not= original-data transformed-data))) 
+      (testing "every complement applied after each operation should revert to the original."
+        (is (= original-data reverted-data))))))
+
 (deftest test-next-steps
   (testing "step should generate all 8 next available steps when previous is empty."
-    (is (= 8 (count (next-steps initial-cube #{}))))))
+    (is (= 8 (count (next-steps initial-cube [])))))
+  (testing "the set of next steps should be the operators."
+    (is (= (into #{} ops) (into #{} (map (comp peek second) (next-steps initial-cube [])))))) 
+  (testing "the set of next states should be the result of the operators on the previous state."
+    (is (= (into #{} (map #(@% initial-cube) ops))
+           (into #{} (map first (next-steps initial-cube [])))))))
+
+(deftest test-filter-previous
+  (testing "Previously encountered states are filtered out."
+    (is (= 1 nil))))
