@@ -73,7 +73,8 @@
 
 (deftest test-rleft-
   (testing "rleft- once steps once."
-    (is (= 1 nil))) 
+    (is (= [1 6 5 9 4 17 2 3 8 18 10 20 11 16 15 19 14 7 12 13]
+           (rleft- initial-cube)))) 
   (testing "rleft- 3 times is the same as rleft+ once."
     (is (= (rleft+ initial-cube)
            (repeat-on-data initial-cube 3 rleft-))) 
@@ -83,7 +84,8 @@
 
 (deftest test-rleft+
   (testing "rleft+ once steps once."
-    (is (= 1 nil))) 
+    (is (= [11 6 5 19 4 7 2 3 18 8 10 20 1 16 15 9 14 17 12 13]
+           (rleft+ initial-cube)))) 
   (testing "rleft+ 3 times is the same as rleft- once."
     (is (= (rleft- initial-cube)
            (repeat-on-data initial-cube 3 rleft+))) 
@@ -93,7 +95,8 @@
 
 (deftest test-rright-
   (testing "rright- once steps once."
-    (is (= 1 nil))) 
+    (is (= [7 6 3 8 10 1 2 15 19 9 14 4 17 16 13 18 20 11 12 5]
+           (rright- initial-cube)))) 
   (testing "rright- 3 times is the same as rright+ once."
     (is (= (rright+ initial-cube)
            (repeat-on-data initial-cube 3 rright-))) 
@@ -103,7 +106,8 @@
 
 (deftest test-rright+
   (testing "rright+ once steps once."
-    (is (= 1 nil))) 
+    (is (= [7 6 13 8 20 1 2 5 19 9 4 14 17 16 3 18 10 11 12 15]
+           (rright+ initial-cube)))) 
   (testing "rright+ 3 times is the same as rright- once."
     (is (= (rright- initial-cube)
            (repeat-on-data initial-cube 3 rright+))) 
@@ -111,3 +115,6 @@
     (is (= initial-cube
            (repeat-on-data initial-cube 4 rright+))))))
 
+(deftest test-next-steps
+  (testing "step should generate all 8 next available steps when previous is empty."
+    (is (= 8 (count (next-steps initial-cube #{}))))))
