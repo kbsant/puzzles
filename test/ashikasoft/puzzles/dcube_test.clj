@@ -138,8 +138,12 @@
            (into #{} (map first (next-steps initial-cube [])))))))
 
 (deftest test-filter-previous
-  (testing "Previously encountered states are filtered out."
-    (is (= 1 nil))))
+  (let [results [[[0] '()], [[1 2 3] '(a b c)], [[2 3 4] '(d e f)], [[9] '(z)]]]
+    (testing "Filtering with an empty history passes everything."
+      (is (= results (filter-previous {} results)))) 
+    (testing "Previously encountered states are filtered out."
+      (is (= [[[0] '()], [[1 2 3] '(a b c)],[[9] '(z)]]
+             (filter-previous #{[2 3 4]} results))))))
 
 (deftest test-solve
   (testing "Solving the initial state should be empty."
@@ -147,6 +151,13 @@
   (testing "It takes 1 top rotation to reach this target."
     (is (= 'rtop- (meta-name (peek (solve (rtop- initial-cube)))))))
   (testing "A short sequence of operations is solvable."
-    (is (= '('rtop- 'rleft+ 'rbottom+ 'rright-)
-           (map meta-name (solve (-> initial-cube rtop- rleft+ rbottom+ rright-)))))))
+    (is (= '(rtop- rleft+ rbottom+ rright-)
+           (map meta-name (solve ((comp rtop- rleft+ rbottom+ rright-) initial-cube)))))))
+
+(def test-reverse-solve
+  (testing "Applying the reversed complement of the solution gives the initial cube."
+    (let [target ((comp rtop- rleft+ rbottom+ rright-) initial-cube)
+          steps (solve target)
+          reverse-steps (map ops-complements (reverse steps))]
+      (is (= initial-cube ((apply comp reverse-steps) target))))))
 

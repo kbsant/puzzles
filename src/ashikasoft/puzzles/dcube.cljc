@@ -1,6 +1,14 @@
 (ns ashikasoft.puzzles.dcube
   (:require [medley.core :as medley]))
 
+;; Solving the cube puzzle:
+;; 1. Model the cube as a 1-d array.
+;; 2. Write and test operations to rotate the rows/cols.
+;; 3. Do a brute force search (BFS) a.k.a. breadth-first search
+;; 4. Print the instructions
+;;
+;; # Model the cube as an array of arbitrary numbers
+;;
 ;; Cube centers
 ;;
 ;;               blue   (top)
@@ -143,30 +151,31 @@
 
 (defn filter-previous
   "Filter out items in the list if they were previously encountered."
-  [previous-map next-list]
-  next-list)
+  [previous-set next-list]
+  (remove (comp previous-set first) next-list))
 
 (def meta-name
   "Return the meta name of the given var."
   (comp :name meta))
 
-;; TODO use a queue to solve using bfs. import medley. 
 (defn solve
-  "Starting at the initial cube, generate all steps needed to get to the target cube."
-  [target-cube]
-  (loop [q (medley/queue [[initial-cube '()]])
-         past {}]
-    (let [[cube steps] (peek q)]
-      (cond
-        (not cube)
-        nil
-        (= target-cube cube)
-        steps
-        (> (count q) 1000)
-        q ;; TODO replace with error
-        :else
-        (let [next-list (next-steps cube steps)
-              filtered (filter-previous past next-list) 
-              next-queue (reduce conj (pop q) next-list) 
-              next-past (assoc past cube steps)]
-          (recur next-queue next-past))))))
+  "Starting at the initial cube, generate the steps needed to get to the target cube."
+  ([target-cube]
+   (solve 100000 target-cube))
+  ([max-queue target-cube]
+   (loop [q (medley/queue [[initial-cube '()]])
+          past #{}]
+     (let [[cube steps] (peek q)]
+       (cond
+         (not cube)
+         nil
+         (= target-cube cube)
+         steps
+         (> (count q) max-queue)
+         nil
+         :else
+         (let [next-list (next-steps cube steps)
+               filtered (filter-previous past next-list)
+               next-queue (reduce conj (pop q) next-list)
+               next-past (conj past cube)]
+           (recur next-queue next-past)))))))
