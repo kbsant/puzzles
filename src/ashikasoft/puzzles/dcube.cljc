@@ -156,10 +156,12 @@
   [target-cube]
   (loop [q (medley/queue [[initial-cube '()]])
          past {}]
-    (if (empty? q)
-      '()
-      (let [[cube steps] (peek q)]
-        (if (= target-cube cube)
-          steps
-          nil)))))
+    (let [[cube steps] (peek q)]
+      (cond
+        (not cube)
+        nil
+        (= target-cube cube)
+        steps
+        :else
+        nil))))
 
