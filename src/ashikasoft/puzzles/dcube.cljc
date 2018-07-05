@@ -161,9 +161,9 @@
 (defn solve
   "Starting at the initial cube, generate the steps needed to get to the target cube."
   ([target-cube]
-   (solve 100000 target-cube))
-  ([max-queue target-cube]
-   (loop [q (medley/queue [[initial-cube '()]])
+   (solve (medley/queue) 1000000 target-cube))
+  ([search-struct max-queue target-cube]
+   (loop [q (into search-struct [[initial-cube '()]])
           past #{}]
      (let [[cube steps] (peek q)]
        (cond
@@ -176,6 +176,6 @@
          :else
          (let [next-list (next-steps cube steps)
                filtered (filter-previous past next-list)
-               next-queue (reduce conj (pop q) next-list)
+               next-queue (reduce conj (pop q) filtered)
                next-past (conj past cube)]
            (recur next-queue next-past)))))))
