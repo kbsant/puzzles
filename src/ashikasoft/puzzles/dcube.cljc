@@ -1,4 +1,5 @@
-(ns ashikasoft.puzzles.dcube)
+(ns ashikasoft.puzzles.dcube
+  (:require [medley.core :as medley]))
 
 ;; Cube centers
 ;;
@@ -153,8 +154,12 @@
 (defn solve
   "Starting at the initial cube, generate all steps needed to get to the target cube."
   [target-cube]
-  (loop [cube initial-cube, steps '()]
-    (if (= target-cube cube)
-      steps
-      nil)))
+  (loop [q (medley/queue [[initial-cube '()]])
+         past {}]
+    (if (empty? q)
+      '()
+      (let [[cube steps] (peek q)]
+        (if (= target-cube cube)
+          steps
+          nil)))))
 
