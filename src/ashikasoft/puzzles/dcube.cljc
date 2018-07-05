@@ -170,7 +170,7 @@
    {:pre [(= (count initial-cube) (count (into #{} target-cube))),
           (empty? search-struct)]}
    (loop [q (into search-struct [[initial-cube '()]])
-          past #{}]
+          past #{initial-cube}]
      (let [[cube steps] (peek q)]
        (cond
          (not cube)
@@ -181,7 +181,8 @@
          [nil (str "search limit exceeded: " max-struct)]
          :else
          (let [next-list (next-steps cube steps)
-               next-past (conj past cube)
-               filtered (filter-previous next-past next-list)
+               filtered (filter-previous past next-list)
+               next-past (reduce conj past (map first filtered))
                next-queue (reduce conj (pop q) filtered)]
            (recur next-queue next-past)))))))
+
