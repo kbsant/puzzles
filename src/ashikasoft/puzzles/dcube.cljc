@@ -162,6 +162,11 @@
         nil
         (= target-cube cube)
         steps
+        (> (count q) 1000)
+        q ;; TODO replace with error
         :else
-        nil))))
-
+        (let [next-list (next-steps cube steps)
+              filtered (filter-previous past next-list) 
+              next-queue (reduce conj (pop q) next-list) 
+              next-past (assoc past cube steps)]
+          (recur next-queue next-past))))))
