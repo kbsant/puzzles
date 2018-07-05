@@ -159,23 +159,29 @@
   (comp :name meta))
 
 (defn solve
-  "Starting at the initial cube, generate the steps needed to get to the target cube."
+  "Starting at the initial cube, generate the steps needed to get to the target cube.
+   The target cube should be the of the standard length of 20, same as the initial cube.
+   An empty initial search structure and a search size limit may be optionally supplied."
   ([target-cube]
-   (solve (medley/queue) 1000000 target-cube))
-  ([search-struct max-queue target-cube]
+   (solve 1000000 target-cube))
+  ([max-struct target-cube]
+   (solve (medley/queue) max-struct target-cube))
+  ([search-struct max-struct target-cube]
+   {:pre [(= (count initial-cube) (count (into #{} target-cube))),
+          (empty? search-struct)]}
    (loop [q (into search-struct [[initial-cube '()]])
           past #{}]
      (let [[cube steps] (peek q)]
        (cond
          (not cube)
-         nil
+         [nil "empty search result"]
          (= target-cube cube)
          steps
-         (> (count q) max-queue)
-         nil
+         (> (count q) max-struct)
+         [nil (str "search limit exceeded: " max-struct)]
          :else
          (let [next-list (next-steps cube steps)
-               filtered (filter-previous past next-list)
-               next-queue (reduce conj (pop q) filtered)
-               next-past (conj past cube)]
+               next-past (conj past cube)
+               filtered (filter-previous next-past next-list)
+               next-queue (reduce conj (pop q) filtered)]
            (recur next-queue next-past)))))))

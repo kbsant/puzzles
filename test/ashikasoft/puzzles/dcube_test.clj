@@ -159,5 +159,11 @@
     (let [target ((comp rtop- rleft+ rbottom+ rright-) initial-cube)
           steps (solve target)
           reverse-steps (map ops-complements (reverse steps))]
+      (is (= initial-cube ((apply comp reverse-steps) target)))))
+ #_(testing "Sample target"
+    (let [target [5 18 7 8 19 1 2 3 6 9 10 12 17 16 15 14 4 11 20 13]
+          #_ #_ target2 (solve 1000000 [5 18 7 8 19 1 2 3 6 9 10 12 17 16 15 14 4 11 20 13])
+          steps (solve target)
+          reverse-steps (map ops-complements (reverse steps))]
       (is (= initial-cube ((apply comp reverse-steps) target))))))
 
