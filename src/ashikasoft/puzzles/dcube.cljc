@@ -185,9 +185,9 @@
   ([target-cubes]
    (solve 1000000 target-cubes))
   ([max-struct target-cubes]
-   (solve (medley/queue) max-struct target-cubes))
-  ([search-struct max-struct target-cubes]
-   (solve (medley/queue) max-struct initial-cube target-cubes))
+   (solve max-struct initial-cube target-cubes))
+  ([max-struct source-cube target-cubes]
+   (solve (medley/queue) max-struct source-cube target-cubes))
   ([search-struct max-struct source-cube target-cubes]
    {:pre [(set? target-cubes)
           (= (count initial-cube)
