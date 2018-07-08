@@ -200,11 +200,13 @@
      (let [[cube steps] (peek q)]
        (cond
          (not cube)
-         [nil "empty search result"]
+         {:error-message "empty search result"}
          (target-cubes cube)
-         steps
+         {:steps steps
+          :target (target-cubes cube)}
          (> (count q) max-struct)
-         [nil (str "search limit exceeded: " max-struct)]
+         {:error-message (str "search limit exceeded: " max-struct)
+          :past past}
          :else
          (let [next-list (next-steps cube steps)
                filtered (filter-previous past next-list)

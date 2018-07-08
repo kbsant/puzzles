@@ -147,17 +147,17 @@
 
 (deftest test-solve
   (testing "Solving the initial state should be empty."
-    (is (empty? (solve #{initial-cube}))))
+    (is (empty? (:steps (solve #{initial-cube})))))
   (testing "It takes 1 top rotation to reach this target."
-    (is (= 'rtop- (meta-name (peek (solve #{(rtop- initial-cube)}))))))
+    (is (= 'rtop- (meta-name (peek (:steps (solve #{(rtop- initial-cube)})))))))
   (testing "A short sequence of operations is solvable."
     (is (= '(rtop- rleft+ rbottom+ rright-)
-           (map meta-name (solve #{((comp rtop- rleft+ rbottom+ rright-) initial-cube)}))))))
+           (map meta-name (:steps (solve #{((comp rtop- rleft+ rbottom+ rright-) initial-cube)})))))))
 
 (def test-reverse-solve
   (testing "Applying the reversed complement of the solution gives the initial cube."
     (let [target ((comp rtop- rleft+ rbottom+ rright-) initial-cube)
-          steps (solve #{target})
+          steps (:steps (solve #{target}))
           reverse-steps (map ops-complements (reverse steps))]
       (is (= initial-cube ((apply comp reverse-steps) target)))))
  #_(testing "Sample target"
