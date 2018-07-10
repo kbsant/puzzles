@@ -204,7 +204,7 @@
          {:error-message "empty search result"}
          (target-cubes cube)
          {:steps steps
-          :target (target-cubes cube)}
+          :target cube}
          (> (count q) max-struct)
          {:error-message (str "search limit exceeded: " max-struct)
           :past past}
