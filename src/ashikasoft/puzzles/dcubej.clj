@@ -1,7 +1,7 @@
 (ns ashikasoft.puzzles.dcubej
   (:require 
     [medley.core :as medley])
-  (:import (java.util Set ArrayDeque HashSet)))
+  (:import (java.util Set Queue ArrayDeque HashSet)))
 
 (set! *warn-on-reflection* true)
 (set! *unchecked-math* :warn-on-boxed)
@@ -144,7 +144,7 @@
 
 (defn filter-previous-nset
   "Filter out items in the list if they were previously encountered."
-  [previous-set next-list]
+  [^Set previous-set next-list]
   (remove #(.contains previous-set (vec (first %))) next-list))
 
 (defn solve
@@ -159,7 +159,7 @@
    (solve max-struct initial-cube target-cubes))
   ([max-struct source-cube target-cubes]
    (solve (ArrayDeque.) max-struct source-cube target-cubes))
-  ([search-struct ^long max-struct ^ints source-cube ^Set target-cubes]
+  ([^Queue search-struct ^long max-struct ^ints source-cube ^Set target-cubes]
    {:pre [(= (count initial-cube)
              (count (into #{} source-cube))
              (let [target-sizes (into #{} (map (comp count set)) target-cubes)]
@@ -174,7 +174,7 @@
          {:error-message "empty search result"}
          (.contains target-cubes (vec cube))
          {:steps steps
-          :target (.get target-cubes (vec cube))}
+          :target (vec cube)}
          (> (count q) max-struct)
          {:error-message (str "search limit exceeded: " max-struct)
           :past past}
