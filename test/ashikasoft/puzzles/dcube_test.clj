@@ -171,5 +171,5 @@
      (require '[ashikasoft.puzzles.dcubej :as dcj])
      (def ex-cube3 (int-array [15 20 5 6 14 1 2 13 4 9 10 19 17 16 11 18 12 3 8 7]))
      (def init-past3 (:past (dcj/solve 1100000  (let [s (java.util.HashSet.)] (.add s ex-cube3) s))))
-     (def itermediate3-all (dcj/solve 2000000  ex-cube3 init-past3)))
-
+     (def itermediate3-all (dcj/solve 2000000  ex-cube3 init-past3))
+     (def soln-all (dcj/solve 20000000 (let [s (java.util.HashSet.)] (.add s ex-cube3) s))))

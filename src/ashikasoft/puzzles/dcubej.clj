@@ -24,7 +24,9 @@
            18    14
            11 12 13]))
 
-(defmacro aget-set [out out-idxs in in-idxs]
+(defmacro aget-set
+  "Copy to the output indices from the source indices inline."
+  [out out-idxs in in-idxs]
   (let [body (for [i (range (count out-idxs))]
                 `(aset ~out ~(nth out-idxs i) (aget ~in ~(nth in-idxs i))))]
     (concat (cons 'do body) `(~out))))
