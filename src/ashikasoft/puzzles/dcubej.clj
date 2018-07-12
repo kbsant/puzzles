@@ -1,6 +1,4 @@
 (ns ashikasoft.puzzles.dcubej
-  (:require 
-    [medley.core :as medley])
   (:import (java.util Set Queue ArrayDeque HashSet)))
 
 (set! *warn-on-reflection* true)
