@@ -23,15 +23,17 @@
 ;; other approach is to paint it on the fly - more efficient, but a bit more complex
 
 
-(defn paint-slice [indices grid {:keys [top bottom left right strawberries]}]
+(defn paint-slice [w indices grid {:keys [top bottom left right strawberries]}]
   (let [index (get indices (first strawberries))
-        cells (for [r (range top (inc bottom)), c (range left (inc right))] [r c])]
-    (reduce (fn [g [r c]] (assoc g (get-offset r c) index)) grid cells)))
+        cells (for [r (range top (inc bottom)), c (range left (inc right))]
+                (get-offset w r c))]
+    (reduce (fn [g offset] (assoc g offset index)) grid cells)))
 
-(defn paint-cake [{:keys [strawberries] :as orig-cake} cakes]
-  (let [indices (zipmap strawberries (range 1 (inc (count strawberries)))) 
+(defn paint-cake [{:keys [bottom right strawberries] :as orig-cake} cakes]
+  (let [[h w] [(inc bottom) (inc right)]
+        indices (zipmap strawberries (range 1 (inc (count strawberries)))) 
         blank-grid (into [] (repeat 0 (* h w)))]
-    (reduce (partial paint-slice indices) blank-grid cakes)))
+    (reduce (partial paint-slice w indices) blank-grid cakes)))
 
 (defn grid->str [w grid]
   (->> grid (partition w) (interpose '(\newline)) (reduce into []) (apply str)))
