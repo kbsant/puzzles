@@ -7,23 +7,27 @@
       ---  5 [2 xs]
       --- ...
       --- 0.1 []
-  The ways to form change correspond to the leaves of the tree."
+  The ways to form change correspond to the leaves of the tree where the amount has been reduced to zero."
   ([amount coins]
-   (make-change {} #{} amount coins))
-  ([parent amount [coin & rest :as coins]]
+   (let [guarded-coins (assoc coins 0 1)]
+     (make-change {} #{} amount guarded-coins)))
+  ([trail solutions amount coins [d & rest :as ds]]
+   (let [[d & ds] (sort )])
    (cond
      ;; no amount left
      (zero? amount)
-     parent
+     #{trail} 
      ;; no coins left
-     (not coin)
-     nil
-     (< amount coin)
-     (recur way ways amount rest)
+     (not d)
+     #{}
+     ;; denomination is too large. try the next.
+     (< amount d)
+     (recur trail solutions amount (dissoc coins d) ds)
      ;; coin fits amount
      (>= amount coin)
+     (let [next-coins (update coins d (fnil dec 0))])
      (recur
-      (update way coin (fnil inc 0))
+      
       ways
       (- amount coin)
       coins)
@@ -31,9 +35,9 @@
      :else
      (conj ways (assoc way :error {:amount amount :coin coin}))
      
-     )))
+     )
 
-#_
+   #_))
 (comment
   "Repl session"
   (require '[ashikasoft.puzzles.change :as c])
