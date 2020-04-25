@@ -1,5 +1,10 @@
 (ns ashikasoft.puzzles.change)
 
+(defn total-amount [coins]
+  (apply +
+         (for [d (keys coins)]
+           (* d (get coins d)))))
+
 (defn make-change
   "Given an amount, make change using coins.
   The solutions form a tree:
@@ -8,41 +13,38 @@
       --- ...
       --- 0.1 []
   The ways to form change correspond to the leaves of the tree where the amount has been reduced to zero."
-  ([amount coins]
-   (let [guarded-coins (assoc coins 0 1)]
-     (make-change {} #{} amount guarded-coins)))
-  ([trail solutions amount coins [d & rest :as ds]]
-   (let [[d & ds] (sort )])
-   (cond
-     ;; no amount left
-     (zero? amount)
-     #{trail} 
-     ;; no coins left
-     (not d)
-     #{}
-     ;; denomination is too large. try the next.
-     (< amount d)
-     (recur trail solutions amount (dissoc coins d) ds)
-     ;; coin fits amount
-     (>= amount coin)
-     (let [next-coins (update coins d (fnil dec 0))])
-     (recur
-      
-      ways
-      (- amount coin)
-      coins)
-     ;; amount is too small for coin -- FIXME shuffle coins and combine/reduce solutions
-     :else
-     (conj ways (assoc way :error {:amount amount :coin coin}))
-     
-     )
+  ([amount coins-vec]
+   (make-change {} #{} amount (into (sorted-map-by >) coins-vec)))
+  ([trail solutions amount coins] 
+   (let [[d & ds] (keys coins)]
+     (cond
+       ;; no amount left
+       (zero? amount)
+       #{trail} 
+       ;; no coins left, or not enough change
+       (or (not d) (> amount (total-amount coins)))
+       #{}
+       ;; denomination is too large. try the next.
+       (< amount d)
+       (recur trail solutions amount (dissoc coins d))
+       ;; coin fits amount
+       :else ;; TODO -- expand combinations of next-coins, removing largest d for each
+       (let [next-trail (update trail d (fnil inc 0))
+             next-coins (update coins d (fnil dec 0))]
+         (into #{} (make-change
+                          next-trail
+                          solutions
+                          (- amount d)
+                          next-coins)))
+       
+       ))))
 
-   #_))
+   #_
 (comment
   "Repl session"
   (require '[ashikasoft.puzzles.change :as c])
-  (c/make-change 7 [5])
+  (c/make-change 7 [[5 1]])
   ;=> #{{5 1, :unchanged 2}}
-  (c/make-change 7 [5 1])
+  (c/make-change 7 [[5 1] [1 2]])
   ;=> #{{5 1, 1 2}}
          )
