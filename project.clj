@@ -3,6 +3,6 @@
   :url "http://www.ashikasoft.com"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.10.0"]
-                 [medley/medley "1.0.0"]]
+  :dependencies [[org.clojure/clojure "1.10.1"]
+                 [medley/medley "1.3.0"]]
   :jvm-opts ^:replace [])
