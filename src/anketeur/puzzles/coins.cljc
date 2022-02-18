@@ -1,15 +1,20 @@
-(ns anketeur.puzzles.change)
+(ns anketeur.puzzles.coins)
 
-(defn total-amount [coins]
-  (apply +
-         (for [d (keys coins)]
-           (* d (get coins d)))))
+(defn total-amount
+  "Given a map of coins to their count, compute the total amount."
+  [coins]
+  (reduce +
+          (for [[denom number] (seq coins)]
+            (* denom number))))
 
-(defn coin-steps [steps coins]
-  (let [[d _] (first coins)]
-    (if d
-      (recur (conj steps coins) (dissoc coins d))
-      steps)))
+(defn coin-steps
+  "Given a sorted map of coins, return a list of steps with the largest denomination removed in succession."
+  ([coins]
+   (coin-steps [] coins))
+  ([steps [[k _] & _ :as coins]]
+   (if-not k
+     steps
+     (recur (conj steps coins) (dissoc coins k)))))
 
 (defn make-change
   "Given an amount, make change using coins.
@@ -21,7 +26,7 @@
   The ways to form change correspond to the leaves of the tree where the amount has been reduced to zero."
   ([amount coins-vec]
    (let [coins (into (sorted-map-by >) coins-vec)
-         steps (coin-steps [] coins)
+         steps (coin-steps coins)
          change-fn #(make-change {} amount %)]
      (reduce into #{} (map change-fn steps))))
   ([trail amount coins] 
@@ -40,7 +45,7 @@
        :else ;; expand combinations of next-coins, removing largest d for each
        (let [next-trail (update trail d (fnil inc 0))
              next-coins (update coins d (fnil dec 0))
-             next-steps (coin-steps [] next-coins)
+             next-steps (coin-steps next-coins)
              change-fn #(make-change next-trail (- amount d) %)]
          (reduce into #{} (map change-fn next-steps))
          )))))
@@ -48,7 +53,7 @@
    #_
 (comment
   "Repl session"
-  (require '[anketeur.puzzles.change :as c])
+  (require '[anketeur.puzzles.coins :as c])
   (c/make-change 9 [[5 5]])
   :=> #{}
   (c/make-change 9 [[5 5] [2 5] [1 10]])
