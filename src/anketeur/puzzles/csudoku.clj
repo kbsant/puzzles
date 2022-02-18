@@ -111,22 +111,64 @@
             (swap! counter inc)))
 ; main entry point
 ;#_
-(let [solutions (dfs-search print-with-counter empty-board)
-      idx-solutions (map-indexed vector solutions)]
-     (doseq [s idx-solutions] (apply print-board s)))
+(defn solve-all []
+  (let [solutions (dfs-search print-with-counter empty-board)
+        idx-solutions (map-indexed vector solutions)]
+    (doseq [s idx-solutions] (apply print-board s))))
 
 ; some crude unit tests
-;#_
-(let [test-board-1 (board-add-cell empty-board [1 1 1])
-      test-board-99 (board-add-cell empty-board [2 3 99])
-      test-board-full (vec (range 1 (inc (* table-side table-side))))]
- [(row-contains? test-board-99 2 99)
-  (col-contains? test-board-99 3 99)
-  (board-contains? test-board-full 4 4 16)
-  (next-cells test-board-full)
-  (next-cells test-board-99)
-  (next-boards test-board-1)
-  (map is-complete-board? [test-board-1 test-board-full])])
+; #_
+(comment
+
+  ;; REPL session to run everythins (takes a long time)
+  (require '[anketeur.puzzles.csudoku :as cs])
+  (cs/solve-all)
+  
+  ;; some other notes
+  
+  (let [test-board-1 (board-add-cell empty-board [1 1 1])
+        test-board-99 (board-add-cell empty-board [2 3 99])
+        test-board-full (vec (range 1 (inc (* table-side table-side))))]
+    [(row-contains? test-board-99 2 99)
+     (col-contains? test-board-99 3 99)
+     (block-contains? test-board-full 4 4 16)
+     (next-cells test-board-full)
+     (next-cells test-board-99)
+     (next-boards test-board-1)
+     (map is-complete-board? [test-board-1 test-board-full])]))
  
 
-
+#_ (
+ "Pick a few solutions, then blank out some cells. then make some tests.
+171215N  -----------
+: [1 2 3 4 5 6 7 8 9]
+: [4 5 6 7 8 9 1 2 3]
+: [7 8 9 1 2 3 4 5 6]
+: [2 1 4 3 6 5 8 9 7]
+: [5 3 8 9 4 7 6 1 2]
+: [9 6 7 2 1 8 3 4 5]
+: [3 7 2 8 9 4 5 6 1]
+: [6 4 1 5 7 2 9 3 8]
+: [8 9 5 6 3 1 2 7 4]
+171216N  -----------
+: [1 2 3 4 5 6 7 8 9]
+: [4 5 6 7 8 9 1 2 3]
+: [7 8 9 1 2 3 4 5 6]
+: [2 1 4 3 6 5 8 9 7]
+: [5 3 8 9 4 7 6 1 2]
+: [9 6 7 2 1 8 3 4 5]
+: [3 7 2 8 9 4 5 6 1]
+: [8 9 5 6 3 1 2 7 4]
+: [6 4 1 5 7 2 9 3 8]
+171217N  -----------
+: [1 2 3 4 5 6 7 8 9]
+: [4 5 6 7 8 9 1 2 3]
+: [7 8 9 1 2 3 4 5 6]
+: [2 1 4 3 6 5 8 9 7]
+: [5 3 8 9 4 7 6 1 2]
+: [9 6 7 2 1 8 3 4 5]
+: [3 7 2 8 9 4 5 6 1]
+: [8 9 5 6 7 1 2 3 4]
+: [6 4 1 5 3 2 9 7 8] 
+"
+    )
