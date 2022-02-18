@@ -36,7 +36,7 @@
        (zero? amount)
        #{trail} 
        ;; no coins left, or not enough change
-       (or (not d) (> amount (total-amount coins)))
+       (or (empty? coins) (> amount (total-amount coins)))
        #{}
        ;; denomination is too large. try the next.
        (< amount d)
