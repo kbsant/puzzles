@@ -1,4 +1,4 @@
-(ns ashikasoft.puzzles.dcube
+(ns anketeur.puzzles.dcube
   (:require [medley.core :as medley]))
 
 ;; Warning 0: BFS only finds complete solutions till 7 moves. Somewhere at 8 moves,

@@ -1,4 +1,4 @@
-(ns ashikasoft.puzzles.dcubej
+(ns anketeur.puzzles.dcubej
   (:import (java.util Set Queue ArrayDeque HashSet)))
 
 (set! *warn-on-reflection* true)

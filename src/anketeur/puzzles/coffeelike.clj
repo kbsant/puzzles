@@ -1,4 +1,4 @@
-(ns ashikasoft.puzzles.coffeelike
+(ns anketeur.puzzles.coffeelike
   (:require [clojure.string :as string]))
 
 (defn at [s x] (.charAt s x))
