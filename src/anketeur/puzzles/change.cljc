@@ -1,4 +1,4 @@
-(ns ashikasoft.puzzles.change)
+(ns anketeur.puzzles.change)
 
 (defn total-amount [coins]
   (apply +
@@ -48,7 +48,7 @@
    #_
 (comment
   "Repl session"
-  (require '[ashikasoft.puzzles.change :as c])
+  (require '[anketeur.puzzles.change :as c])
   (c/make-change 9 [[5 5]])
   :=> #{}
   (c/make-change 9 [[5 5] [2 5] [1 10]])

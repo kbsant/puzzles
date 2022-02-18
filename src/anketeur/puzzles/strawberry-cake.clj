@@ -1,4 +1,4 @@
-(ns ashikasoft.puzzles.strawberry-cake)
+(ns anketeur.puzzles.strawberry-cake)
 
 ;; cake structure:
 ;; :top r0

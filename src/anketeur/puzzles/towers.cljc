@@ -1,5 +1,5 @@
-(ns ashikasoft.puzzles.towers
-    "Ashikasoft - Towers of Hanoi solved with Clojure")
+(ns anketeur.puzzles.towers
+    "Anketeur - Towers of Hanoi solved with Clojure")
 
 
 ;; Recursive solution to the Towers of Hanoi

@@ -1,6 +1,6 @@
-(ns ashikasoft.puzzles.towers-test
+(ns anketeur.puzzles.towers-test
   (:require [clojure.test :refer :all]
-            [ashikasoft.puzzles.towers :refer :all]))
+            [anketeur.puzzles.towers :refer :all]))
 
 ;; Initial test data
 (defn tower-data []
